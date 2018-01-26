@@ -25,20 +25,24 @@ class CatController extends Controller
     public function postEdit(Request $request, $id)
     {
     	$rules=[
-    		'cat_name'=>'required'
+    		'cat_name'=>'required|min:2',
+    		'cat_des'=>'min:10'
     	];
     	$messages=[
-    		'cat_name.required'=>'Tên danh mục là bắt buộc'
+    		'cat_name.required'=>'Tên danh mục là bắt buộc',
+    		'cat_name.min'=>'Tối thiểu 2 ký tự',
+    		'cat_des.min'=>'Mô tả tối thiếu 10 ký tự'
     	];
 
     	$catName=$request->cat_name;
     	$validator=Validator::make($request->all(), $rules, $messages);
     	if($validator->fails())
     	{
-    		$errors['error']=redirect()->back()->withErrors($validator);
-    		$errors['2']=redirect()->back()->withErrors($validator);
     		$data['itemCat'] = DB::table('category')->where('cat_id', $id)->first();
-    		return view('admin.cat.edit', $errors, isset($data) ? $data : NULL);
+    		//$errors = $validator;
+    		$errors['test']="Lỗi bonus";
+    		return redirect()->back()->withErrors($validator)->with($data);
+    		//return view('admin.cat.edit', $errors, isset($data) ? $data : NULL);
     	}
     	else
     	{
