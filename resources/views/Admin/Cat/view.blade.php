@@ -2,7 +2,7 @@
 @section('title', 'Quản lý danh mục')
 @section('content')
 	@if(Session::has('success'))
-		{{Session::get('success')}}
+		{{Session::get('success')}}</br>
 	@endif
 	@foreach($listCat as $cat)
 		<tr>

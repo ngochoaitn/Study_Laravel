@@ -18,45 +18,42 @@ Route::get('/', function () {
 //Route::get('','HomeController@getIndex');
 
 //Test querry
-Route::group(['namespace'=>'qerry'], function(){
-	Route::group(['prefix' => 'querry'], function(){
+Route::group(['prefix' => 'querry'], function(){
 
-		Route::get('/', function(){
-			echo '<a href="querry/getFirstUser">getFirstUser</a></br>';
-			echo '<a href="querry/getAllUser">getAllUser</a></br>';
-			echo '<a href="querry/insertAUser">insertAUser</a></br>';
-			echo '<a href="querry/insertAUser2">insertAUser2</a></br>';
-		});
-
-		Route::get('getFirstUser', function(){
-			$firstUser=DB::table('demo')->first();
-			echo "First user: $firstUser->demo_user";
-		});
-
-		Route::get('getAllUser', function(){
-			echo "List user:</br>";
-			$allUser = DB::table('demo')->get();
-			foreach ($allUser as $key) {
-				echo "$key->demo_user</br>";
-			}
-		});
-
-		Route::get('insertAUser', function(){
-			$count = DB::table('demo')->count();
-			DB::table('demo')->insert([
-				"demo_user"=>"user$count",
-				"demo_pass"=>"123456"
-				]);
-			echo "Inserted: user$count";
-		});
-
-		Route::get('insertAUser2', 'AddUserController@getViewAddUser');
-		Route::post('insertAUser2', 'AddUserController@postAUser');
+	Route::get('/', function(){
+		echo '<a href="querry/getFirstUser">getFirstUser</a></br>';
+		echo '<a href="querry/getAllUser">getAllUser</a></br>';
+		echo '<a href="querry/insertAUser">insertAUser</a></br>';
+		echo '<a href="querry/insertAUser2">insertAUser2</a></br>';
 	});
+
+	Route::get('getFirstUser', function(){
+		$firstUser=DB::table('demo')->first();
+		echo "First user: $firstUser->demo_user";
+	});
+
+	Route::get('getAllUser', function(){
+		echo "List user:</br>";
+		$allUser = DB::table('demo')->get();
+		foreach ($allUser as $key) {
+			echo "$key->demo_user</br>";
+		}
+	});
+
+	Route::get('insertAUser', function(){
+		$count = DB::table('demo')->count();
+		DB::table('demo')->insert([
+			"demo_user"=>"user$count",
+			"demo_pass"=>"123456"
+			]);
+		echo "Inserted: user$count";
+	});
+
+	Route::get('insertAUser2', 'AddUserController@getViewAddUser');
+	Route::post('insertAUser2', 'AddUserController@postAUser');
 });
 
-
-Route::group(['namespace' => 'Admin'], function(){//để đỡ phải ghi Admin/
+Route::group(['namespace' => 'Admin'], function(){//để đỡ phải ghi Admin\
 	//login
 	Route::group(['prefix' => 'login', 'middleware'=>'CheckLogin'], function(){
 		Route::get('/', 'LoginController@getLogin');
@@ -75,7 +72,7 @@ Route::group(['namespace' => 'Admin'], function(){//để đỡ phải ghi Admin
 			Route::get('/', 'CatController@getView');
 			Route::get('edit/{id}', 'CatController@getEdit');
 			Route::post('edit/{id}', 'CatController@postEdit');
-			Route::get('del', 'CatController@getDel');
+			Route::get('del/{id}', 'CatController@getDel');
 		});
 	});
 });

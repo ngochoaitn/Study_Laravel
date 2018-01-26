@@ -10,7 +10,6 @@
 </head>
 <body>
     <div class="container">
-        Nội dung:</br>
         @yield('content')
     </div>
 </body>

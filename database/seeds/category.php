@@ -20,5 +20,9 @@ class category extends Seeder
         	'cat_name' => 'Công nghệ',
         	'cat_slug' => 'cong-nghe'
         	]);
+        DB::table('category')->insert([
+            'cat_name' => 'Đời sống',
+            'cat_slug' => 'doi-song'
+            ]);
     }
 }

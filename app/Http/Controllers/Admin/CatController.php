@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
 use Validator;
+use Session;
 
 class CatController extends Controller
 {
@@ -23,7 +24,6 @@ class CatController extends Controller
 
     public function postEdit(Request $request, $id)
     {
-    	//return "Đã sửa";
     	$rules=[
     		'cat_name'=>'required'
     	];
@@ -35,25 +35,28 @@ class CatController extends Controller
     	$validator=Validator::make($request->all(), $rules, $messages);
     	if($validator->fails())
     	{
-    		//$errors['error']=redirect()->back()->withErrors($validator);
-    		//return view("admin/cat/edit/$id", $errors);
-    		return "Lỗi";
+    		$errors['error']=redirect()->back()->withErrors($validator);
+    		$errors['2']=redirect()->back()->withErrors($validator);
+    		$data['itemCat'] = DB::table('category')->where('cat_id', $id)->first();
+    		return view('admin.cat.edit', $errors, isset($data) ? $data : NULL);
     	}
     	else
     	{
     		$arr=[
-    			'cat_name'=>$cat_name
+    			'cat_name'=>$catName
     		];
     		DB::table('category')->where('cat_id', $id)->update($arr);
     		Session::flash('success', 'Cập nhật danh mục thành công');
-    		return redirect()->back();
+    		$data['listCat'] = DB::table('category')->get();
+    		return redirect('admin/cat')->with($data);
     	}
     }
 
     public function getDel($id)
     {
-    	DB:table('category')->where('cat_id', $id)->delete();
-    	Sesssion::flash('success', 'Xóa thành công');
-    	return redirect()->intended('admin.cat.view');
+    	DB::table('category')->where('cat_id', $id)->delete();
+    	Session::flash('success', 'Xóa thành công');
+    	$data['listCat'] = DB::table('category')->get();
+    	return redirect('admin/cat')->with($data);//Khi refresh sẽ không hỏi như return view
     }
 }
